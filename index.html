@@ -46,41 +46,6 @@
 <body>
     <!-- Header will be injected here by includes.js -->
 
-    <!-- Mainnet Notice Banner -->
-    <section class="dev-notice">
-        <div class="container">
-            <div class="dev-notice-content">
-                <span class="dev-notice-icon">🚀</span>
-                <div class="dev-notice-text">
-                    <strong>Re-launch Incoming</strong>
-                    <span class="dev-notice-details" data-config="devNotice">Re-launch April 15, 2026 at 00:00 GMT • Node v1.4.34 Released • Wallet v0.6.4 Available</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Re-launch Announcement Banner -->
-    <section class="relaunch-banner">
-        <div class="container">
-            <div class="relaunch-inner">
-                <div class="relaunch-badge">OFFICIAL ANNOUNCEMENT</div>
-                <h2 class="relaunch-title">TIME Coin Re-launch</h2>
-                <p class="relaunch-subtitle">
-                    We are re-launching TIME Coin with a fresh mainnet, enhanced tokenomics, and a fully audited codebase.
-                    The network goes live on <strong>April 15, 2026 at 00:00 GMT</strong> — fair and open to everyone.
-                </p>
-                <div class="relaunch-date-display">
-                    <span class="relaunch-date-label">Launch Date</span>
-                    <span class="relaunch-date-value">April 15, 2026 — 00:00 GMT</span>
-                </div>
-                <div class="relaunch-actions">
-                    <a href="roadmap.html" class="btn btn-primary">View Roadmap</a>
-                    <a href="community.html" class="btn btn-secondary">Join Community</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Hero Section -->
     <section class="hero">
         <div class="container text-center">
@@ -96,6 +61,7 @@
                 <a href="roadmap.html" class="btn btn-secondary">View Roadmap</a>
                 <a href="https://github.com/time-coin/time-wallet" target="_blank" rel="noopener" class="btn btn-secondary">View on GitHub</a>
             </div>
+            <p class="hero-version">Mainnet Live &bull; Node <span data-config="nodeVersion"></span> &bull; Wallet <span data-config="walletVersion"></span></p>
         </div>
     </section>
 
@@ -271,142 +237,6 @@
 
     <style>
         /* Page-Specific Styles */
-        /* Re-launch Banner */
-        .relaunch-banner {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
-            border-top: 1px solid rgba(102, 126, 234, 0.3);
-            border-bottom: 1px solid rgba(102, 126, 234, 0.3);
-            padding: 60px 0;
-            text-align: center;
-        }
-
-        .relaunch-inner {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .relaunch-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: #fff;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            padding: 5px 16px;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-        }
-
-        .relaunch-title {
-            font-size: 48px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 16px;
-        }
-
-        .relaunch-subtitle {
-            font-size: 18px;
-            color: #b8b8d4;
-            line-height: 1.7;
-            margin-bottom: 40px;
-        }
-
-        .relaunch-subtitle strong {
-            color: #e0e0f0;
-        }
-
-        /* Launch date display */
-        .relaunch-date-display {
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(102, 126, 234, 0.3);
-            border-radius: 14px;
-            padding: 20px 40px;
-            margin-bottom: 36px;
-            gap: 6px;
-        }
-
-        .relaunch-date-label {
-            font-size: 12px;
-            color: #8888aa;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .relaunch-date-value {
-            font-size: 28px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .relaunch-actions {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        @media (max-width: 768px) {
-            .relaunch-title {
-                font-size: 32px;
-            }
-
-            .relaunch-subtitle {
-                font-size: 15px;
-            }
-
-            .relaunch-date-value {
-                font-size: 20px;
-            }
-
-            .relaunch-date-display {
-                padding: 16px 24px;
-            }
-        }
-
-        .dev-notice {
-            background: rgba(102, 126, 234, 0.1);
-            border-bottom: 2px solid rgba(102, 126, 234, 0.3);
-            padding: 15px 0;
-            margin-bottom: 20px;
-        }
-
-        .dev-notice-content {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .dev-notice-icon {
-            font-size: 24px;
-        }
-
-        .dev-notice-text {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
-
-        .dev-notice-text strong {
-            color: #a78bfa;
-            font-size: 16px;
-        }
-
-        .dev-notice-details {
-            color: #b8b8d4;
-            font-size: 14px;
-        }
-
         .hero {
             padding: 100px 0 80px;
         }
@@ -428,6 +258,13 @@
             gap: 15px;
             justify-content: center;
             flex-wrap: wrap;
+        }
+
+        .hero-version {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #6868a0;
+            letter-spacing: 0.5px;
         }
 
         .stats {
@@ -569,11 +406,6 @@
 
             .masternode-card.featured {
                 transform: scale(1);
-            }
-
-            .dev-notice-content {
-                flex-direction: column;
-                text-align: center;
             }
         }
     </style>

@@ -834,11 +834,11 @@ Distribution per block:
 cd time-masternode</code></pre>
 
             <h4>2. Run the Install Script</h4>
-            <pre><code># Mainnet
-sudo bash scripts/install-masternode.sh mainnet
+            <p><strong>Mainnet:</strong></p>
+            <pre><code>sudo bash scripts/install-masternode.sh mainnet</code></pre>
 
-# Testnet
-sudo bash scripts/install-masternode.sh testnet</code></pre>
+            <p><strong>Testnet</strong> — for testnet nodes, see the <a href="#testnet">Testnet section</a> for additional details:</p>
+            <pre><code>sudo bash scripts/install-masternode.sh testnet</code></pre>
 
             <p><strong>Running both networks:</strong> You can run mainnet and testnet side by side on the same server — ports and data directories don't overlap. Just run the installer twice, once for each network.</p>
 
@@ -885,9 +885,13 @@ time-cli sendtoaddress TIME1your_address 100000
 # Wait for 3 confirmations (~30 min), then find the TXID and vout
 time-cli listunspent</code></pre>
 
-            <h4>4. Generate a Masternode Key</h4>
+            <h4>4. Masternode Key</h4>
+            <div class="info-box">
+                <strong>💡 Already Done If You Used the Install Script</strong><br>
+                The <code>install-masternode.sh</code> script automatically generates a masternode key and writes it to <code>/root/.timecoin/time.conf</code> as <code>masternodeprivkey=...</code>. You do not need to run <code>genkey</code> manually — skip to step 5.
+            </div>
+            <p>If you set up your node manually (without the script), generate the key now and add it to <code>/root/.timecoin/time.conf</code>:</p>
             <pre><code>time-cli masternode genkey</code></pre>
-            <p>Add the output to <code>/root/.timecoin/time.conf</code>:</p>
             <pre><code>masternodeprivkey=&lt;key from genkey&gt;</code></pre>
 
             <h4>5. Update masternode.conf</h4>

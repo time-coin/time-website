@@ -793,10 +793,10 @@ time-cli sendtoaddress TIME1recipient... 100 --nowait</code></pre>
 Distribution per block:
 ├─  30 TIME to block producer (VRF-selected)
 ├─   5 TIME to on-chain treasury (governance-controlled)
-├─  25 TIME to Gold tier pool   (single winner per block)
-├─  18 TIME to Silver tier pool (single winner per block)
-├─  14 TIME to Bronze tier pool (single winner per block)
-└─   8 TIME shared among Free tier nodes (up to 25 recipients)</code></pre>
+├─  25 TIME to Gold tier pool   (shared among active Gold nodes, up to 25/block)
+├─  18 TIME to Silver tier pool (shared among active Silver nodes, up to 25/block)
+├─  14 TIME to Bronze tier pool (shared among active Bronze nodes, up to 25/block)
+└─   8 TIME shared among Free tier nodes (up to 25 recipients, fairness rotation)</code></pre>
 
             <h2 id="masternode-setup">Masternode Setup Guide</h2>
 
@@ -821,8 +821,8 @@ Distribution per block:
             <h3>Prerequisites</h3>
             <ul>
                 <li>Ubuntu LTS 22.04 or 24.04 VPS with a public IP (Liquid Web, DigitalOcean, Vultr, or similar)</li>
-                <li>Minimum: 1 vCPU, 1 GB RAM, 30 GB disk (Free / Bronze / Silver tiers)</li>
-                <li>Gold tier: 4 GB RAM, 2 vCPU, 50 GB disk recommended</li>
+                <li>Minimum: 2 vCPU, 2 GB RAM, 10 GB disk — 50 GB+ SSD recommended</li>
+                <li>Gold tier: 4+ vCPU, 4 GB RAM, 50 GB+ SSD recommended</li>
                 <li>Port 24000 open for P2P (mainnet) or 24100 (testnet)</li>
                 <li>Collateral: 1,000 TIME (Bronze), 10,000 TIME (Silver), or 100,000 TIME (Gold) — or 0 for Free tier</li>
             </ul>
@@ -902,16 +902,20 @@ mn1 abc123...def456 0</code></pre>
 
             <h4>6. Restart and Verify</h4>
             <pre><code># Restart the service
-systemctl restart timed
+systemctl restart timed      # mainnet
+systemctl restart timetd     # testnet
 
 # Check it is running
-systemctl status timed
+systemctl status timed       # mainnet
+systemctl status timetd      # testnet
 
 # View live logs
-journalctl -u timed -f
+journalctl -u timed -f       # mainnet
+journalctl -u timetd -f      # testnet
 
 # Verify masternode status
-time-cli masternode status
+time-cli masternodestatus
+time-cli masternodelist
 
 # Check peer connections
 time-cli getpeerinfo</code></pre>
@@ -920,12 +924,24 @@ time-cli getpeerinfo</code></pre>
                 <strong>✅ Masternode Active!</strong> Your node will begin earning block rewards once it is recognized by the network. Free-tier nodes are eligible after a 72-block maturity period (~12 hours).
             </div>
 
+            <h4>7. Register at the Portal</h4>
+            <div class="warning-box">
+                <strong>⚠️ Final and Required Step — Peer Whitelisting</strong><br>
+                Log in to the TIME Coin Masternode Portal and submit your node's IP for peer whitelisting. Without this your node can still participate, but it will not appear in the official peer registry and other nodes won't be able to whitelist it.
+            </div>
+            <p>Visit the dashboard and submit your node's public IP, port, tier, and network under <strong>Submit Your Masternode</strong>:</p>
+            <p><a href="dashboard.html" style="color:var(--primary-purple)"><strong>👉 TIME Coin Masternode Portal</strong></a></p>
+            <p>Approval typically takes <strong>24 hours</strong>. Once approved, your IP is published in the official peer list and your node receives priority inbound connections.</p>
+            <pre><code># Find your server's public IP
+curl -s https://ifconfig.me</code></pre>
+
             <h3>Useful Commands</h3>
-            <pre><code># Service management
-systemctl status timed
-systemctl restart timed
-systemctl stop timed
-systemctl start timed
+            <pre><code># Service management (mainnet = timed, testnet = timetd)
+systemctl status timed / timetd
+systemctl restart timed / timetd
+systemctl stop timed / timetd
+journalctl -u timed -f          # mainnet logs
+journalctl -u timetd -f         # testnet logs
 
 # Node information
 time-cli getblockchaininfo
@@ -933,13 +949,15 @@ time-cli getbalance
 time-cli getpeerinfo
 
 # Masternode
-time-cli masternode status
-time-cli masternode list
+time-cli masternodestatus
+time-cli masternodelist
+time-cli listlockedcollaterals
 time-cli masternode genkey
 
 # Configuration files
-nano /root/.timecoin/time.conf
-nano /root/.timecoin/masternode.conf</code></pre>
+nano ~/.timecoin/time.conf           # mainnet
+nano ~/.timecoin/testnet/time.conf   # testnet
+nano ~/.timecoin/masternode.conf</code></pre>
 
             <h3>TUI Dashboard</h3>
             <p>TIME Coin includes a built-in terminal dashboard that shows real-time node status — blockchain info, peers, masternode status, mempool, recent blocks, and governance — all in one view.</p>
@@ -957,21 +975,21 @@ bash scripts/dashboard.sh</code></pre>
                 <strong>Per-Block Reward Split (100 TIME total):</strong><br>
                 • Block Producer: 30 TIME (VRF-selected leader)<br>
                 • Treasury: 5 TIME (on-chain, governance-controlled)<br>
-                • Gold tier: 25 TIME → <strong>single winner</strong> selected by fairness rotation<br>
-                • Silver tier: 18 TIME → <strong>single winner</strong> selected by fairness rotation<br>
-                • Bronze tier: 14 TIME → <strong>single winner</strong> selected by fairness rotation<br>
-                • Free tier: 8 TIME → shared among up to 25 active Free nodes
+                • Gold tier: 25 TIME → shared among active Gold nodes (up to 25/block, fairness rotation)<br>
+                • Silver tier: 18 TIME → shared among active Silver nodes (up to 25/block, fairness rotation)<br>
+                • Bronze tier: 14 TIME → shared among active Bronze nodes (up to 25/block, fairness rotation)<br>
+                • Free tier: 8 TIME → shared among up to 25 active Free nodes (fairness rotation)
             </div>
 
             <h3>How Rewards Work</h3>
-            <p>For Bronze, Silver, and Gold tiers, the full tier pool goes to <strong>one node per block</strong>, chosen by a fairness-weighted rotation that gives preference to nodes that have waited longest since their last win. Over time, every active node in a tier receives approximately equal rewards.</p>
+            <p>Each tier's pool is split equally among eligible nodes in that tier (up to 25 recipients per block). When a tier has more than 25 active nodes, a fairness-weighted rotation ensures every node receives equal rewards over time — nodes that have waited longest are prioritized first.</p>
             <div class="info-box">
                 <strong>Reward eligibility:</strong> Your node must appear in the <code>consensus_participants_bitmap</code> of the previous block — meaning it actively participated in gossip or TimeVote during that block period. Downtime means missed rounds; missed rounds mean no eligibility for that block's reward.
             </div>
 
             <h3>Reward Factors</h3>
             <ul>
-                <li><strong>Tier:</strong> Higher tiers win a larger single-block payout (14 / 18 / 25 TIME)</li>
+                <li><strong>Tier:</strong> Higher tiers have a larger pool per block (Bronze 14 / Silver 18 / Gold 25 TIME), split among that tier's active nodes</li>
                 <li><strong>Active nodes in your tier:</strong> More competing nodes means fewer wins per node, but the same long-run expected average</li>
                 <li><strong>Uptime:</strong> Missed blocks = missed reward eligibility — no stake is penalised for downtime</li>
                 <li><strong>Block time:</strong> 10 minutes — 144 blocks per day, 52,560 per year</li>

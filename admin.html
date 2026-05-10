@@ -1845,38 +1845,53 @@
                 document.getElementById('inspectTestRows').innerHTML = probeErrorRow(msg);
             }
 
-            // Render node health (sync + genesis)
-            if (healthResult.status === 'fulfilled' && !healthResult.value.error) {
-                const { sync, genesis } = healthResult.value;
+            // Render node health — remote state from probe, reference from nodeinfo
+            {
+                const probeOk  = probeResult.status  === 'fulfilled' && !probeResult.value.error;
+                const healthOk = healthResult.status === 'fulfilled' && !healthResult.value.error;
+
+                const remoteBlocks = probeOk  ? probeResult.value.outbound?.commitCount ?? null : null;
+                const magicMatch   = probeOk  ? probeResult.value.outbound?.magicMatch  ?? null : null;
+                const refBlocks    = healthOk ? healthResult.value.refBlocks    : null;
+                const genesisHash  = healthOk ? healthResult.value.genesisHash  : null;
+
+                const blocksBehind = refBlocks !== null && remoteBlocks !== null
+                    ? Math.max(0, refBlocks - remoteBlocks) : null;
+                const synced = blocksBehind !== null ? blocksBehind <= 3 : null;
 
                 // Sync row
                 let syncBadge, syncMark, syncDetail;
-                if (sync.synced === true) {
+                if (synced === true) {
                     syncBadge = 'probe-badge-ok'; syncMark = '✓';
-                    syncDetail = `Block ${sync.remoteBlocks?.toLocaleString()} — synced (network at ${sync.refBlocks?.toLocaleString()})`;
-                } else if (sync.synced === false) {
+                    syncDetail = `Block ${remoteBlocks.toLocaleString()} — synced (network at ${refBlocks.toLocaleString()})`;
+                } else if (synced === false) {
                     syncBadge = 'probe-badge-warn'; syncMark = '!';
-                    syncDetail = `Block ${sync.remoteBlocks?.toLocaleString()} — ${sync.blocksBehind} block${sync.blocksBehind === 1 ? '' : 's'} behind (network at ${sync.refBlocks?.toLocaleString()})`;
-                } else {
+                    syncDetail = `Block ${remoteBlocks.toLocaleString()} — ${blocksBehind} block${blocksBehind === 1 ? '' : 's'} behind (network at ${refBlocks.toLocaleString()})`;
+                } else if (!probeOk) {
                     syncBadge = 'probe-badge-fail'; syncMark = '✕';
-                    syncDetail = sync.error || 'Could not determine block height';
+                    syncDetail = 'Probe failed — cannot determine block height';
+                } else {
+                    syncBadge = 'probe-badge-warn'; syncMark = '?';
+                    syncDetail = remoteBlocks !== null
+                        ? `Node at block ${remoteBlocks.toLocaleString()} — reference unavailable`
+                        : 'Block height not available in handshake response';
                 }
 
                 // Genesis row
                 let genBadge, genMark, genDetail;
-                if (genesis.verified === true) {
+                if (magicMatch === true) {
                     genBadge = 'probe-badge-ok'; genMark = '✓';
                     genDetail = 'Network magic verified — node is on the correct chain';
-                } else if (genesis.verified === false) {
+                } else if (magicMatch === false) {
                     genBadge = 'probe-badge-fail'; genMark = '✕';
                     genDetail = 'Network magic mismatch — node may be on a fork or wrong network';
                 } else {
                     genBadge = 'probe-badge-warn'; genMark = '?';
-                    genDetail = 'Could not verify — handshake did not complete';
+                    genDetail = 'Could not verify — handshake response not parseable';
                 }
 
-                const hashLine = genesis.hash
-                    ? `<div class="probe-detail" style="font-family:monospace;margin-top:3px">${genesis.hash.slice(0,16)}…${genesis.hash.slice(-8)}</div>`
+                const hashLine = genesisHash
+                    ? `<div class="probe-detail" style="font-family:monospace;margin-top:3px">${genesisHash.slice(0,16)}…${genesisHash.slice(-8)}</div>`
                     : '';
 
                 document.getElementById('inspectHealthRows').innerHTML = `
@@ -1895,9 +1910,6 @@
                             ${hashLine}
                         </div>
                     </div>`;
-            } else {
-                const msg = healthResult.status === 'fulfilled' ? healthResult.value.error : healthResult.reason?.message || 'Health check failed';
-                document.getElementById('inspectHealthRows').innerHTML = probeErrorRow(msg);
             }
         };
 

@@ -406,6 +406,7 @@
         .probe-badge-ok   { background: rgba(74,222,128,0.12); color: #4ade80; }
         .probe-badge-fail { background: rgba(239,68,68,0.12);  color: #f87171; }
         .probe-badge-wait { background: rgba(56,189,248,0.12); color: #38bdf8; }
+        .probe-badge-warn { background: rgba(251,191,36,0.12); color: #fbbf24; }
         .probe-badge-host { background: rgba(251,191,36,0.12); color: #fbbf24; }
         .probe-badge-home { background: rgba(52,211,153,0.12); color: #34d399; }
         .probe-label {
@@ -1519,6 +1520,19 @@
                 </div>
             </div>
 
+            <hr class="probe-divider">
+
+            <!-- Node Health -->
+            <div class="probe-section">
+                <div class="probe-section-title">Node Health</div>
+                <div id="inspectHealthRows">
+                    <div class="probe-row">
+                        <span class="probe-badge probe-badge-wait">…</span>
+                        <div><div class="probe-label">Checking sync &amp; genesis…</div></div>
+                    </div>
+                </div>
+            </div>
+
             <div class="modal-footer">
                 <button class="btn-cancel" onclick="closeInspectModal()">Close</button>
             </div>
@@ -1752,21 +1766,24 @@
             document.getElementById('inspectLabel').textContent = `${ip}:${port} — ${network === 'mainnet' ? 'Mainnet' : 'Testnet'}`;
             document.getElementById('inspectIpRows').innerHTML = probeLoadingRow('Looking up IP info…');
             document.getElementById('inspectTestRows').innerHTML = probeLoadingRow('Running connection tests…');
+            document.getElementById('inspectHealthRows').innerHTML = probeLoadingRow('Checking sync &amp; genesis…');
             document.getElementById('inspectModal').classList.add('show');
 
             const idToken = await auth.currentUser?.getIdToken();
             if (!idToken) {
                 document.getElementById('inspectIpRows').innerHTML = probeErrorRow('Auth error — please refresh.');
                 document.getElementById('inspectTestRows').innerHTML = probeErrorRow('Auth error — please refresh.');
+                document.getElementById('inspectHealthRows').innerHTML = probeErrorRow('Auth error — please refresh.');
                 return;
             }
 
             const headers = { 'Authorization': `Bearer ${idToken}` };
 
-            // Run lookup and probe concurrently
-            const [lookupResult, probeResult] = await Promise.allSettled([
+            // Run lookup, probe, and node health check concurrently
+            const [lookupResult, probeResult, healthResult] = await Promise.allSettled([
                 fetch(`/api/v1/nodes/lookup?ip=${encodeURIComponent(ip)}`, { headers }).then(r => r.json()),
                 fetch(`/api/v1/nodes/probe?ip=${encodeURIComponent(ip)}&port=${encodeURIComponent(port)}&network=${encodeURIComponent(network)}`, { headers }).then(r => r.json()),
+                fetch(`/api/v1/nodes/nodeinfo?ip=${encodeURIComponent(ip)}&port=${encodeURIComponent(port)}&network=${encodeURIComponent(network)}`, { headers }).then(r => r.json()),
             ]);
 
             // Render IP info
@@ -1826,6 +1843,61 @@
             } else {
                 const msg = probeResult.status === 'fulfilled' ? probeResult.value.error : probeResult.reason?.message || 'Probe failed';
                 document.getElementById('inspectTestRows').innerHTML = probeErrorRow(msg);
+            }
+
+            // Render node health (sync + genesis)
+            if (healthResult.status === 'fulfilled' && !healthResult.value.error) {
+                const { sync, genesis } = healthResult.value;
+
+                // Sync row
+                let syncBadge, syncMark, syncDetail;
+                if (sync.synced === true) {
+                    syncBadge = 'probe-badge-ok'; syncMark = '✓';
+                    syncDetail = `Block ${sync.remoteBlocks?.toLocaleString()} — synced (network at ${sync.refBlocks?.toLocaleString()})`;
+                } else if (sync.synced === false) {
+                    syncBadge = 'probe-badge-warn'; syncMark = '!';
+                    syncDetail = `Block ${sync.remoteBlocks?.toLocaleString()} — ${sync.blocksBehind} block${sync.blocksBehind === 1 ? '' : 's'} behind (network at ${sync.refBlocks?.toLocaleString()})`;
+                } else {
+                    syncBadge = 'probe-badge-fail'; syncMark = '✕';
+                    syncDetail = sync.error || 'Could not determine block height';
+                }
+
+                // Genesis row
+                let genBadge, genMark, genDetail;
+                if (genesis.verified === true) {
+                    genBadge = 'probe-badge-ok'; genMark = '✓';
+                    genDetail = 'Network magic verified — node is on the correct chain';
+                } else if (genesis.verified === false) {
+                    genBadge = 'probe-badge-fail'; genMark = '✕';
+                    genDetail = 'Network magic mismatch — node may be on a fork or wrong network';
+                } else {
+                    genBadge = 'probe-badge-warn'; genMark = '?';
+                    genDetail = 'Could not verify — handshake did not complete';
+                }
+
+                const hashLine = genesis.hash
+                    ? `<div class="probe-detail" style="font-family:monospace;margin-top:3px">${genesis.hash.slice(0,16)}…${genesis.hash.slice(-8)}</div>`
+                    : '';
+
+                document.getElementById('inspectHealthRows').innerHTML = `
+                    <div class="probe-row">
+                        <span class="probe-badge ${syncBadge}">${syncMark}</span>
+                        <div>
+                            <div class="probe-label">Chain sync</div>
+                            <div class="probe-detail">${syncDetail}</div>
+                        </div>
+                    </div>
+                    <div class="probe-row">
+                        <span class="probe-badge ${genBadge}">${genMark}</span>
+                        <div>
+                            <div class="probe-label">Genesis block</div>
+                            <div class="probe-detail">${genDetail}</div>
+                            ${hashLine}
+                        </div>
+                    </div>`;
+            } else {
+                const msg = healthResult.status === 'fulfilled' ? healthResult.value.error : healthResult.reason?.message || 'Health check failed';
+                document.getElementById('inspectHealthRows').innerHTML = probeErrorRow(msg);
             }
         };
 

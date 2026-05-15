@@ -65,14 +65,16 @@ cd time-masternode
 
 ### Step 2 — Run the installer
 
+**Mainnet (recommended):**
+
 ```bash
-# Testnet (recommended for first-time setup)
-sudo ./scripts/install-masternode.sh testnet
-
-# — or —
-
-# Mainnet (production)
 sudo ./scripts/install-masternode.sh mainnet
+```
+
+**Testnet (optional — for testing only):**
+
+```bash
+sudo ./scripts/install-masternode.sh testnet
 ```
 
 ### Step 3 — Follow the prompts

@@ -9,7 +9,7 @@
  */
 const TIME_CONFIG = {
     // Software versions
-    nodeVersion:    'v1.5.5',
+    nodeVersion:    'v1.5.7',
     walletVersion:  'v0.6.6',
     mobileVersion:  'v0.5.13',
     mainnetVersion: 'v2.0.0',
@@ -28,8 +28,8 @@ const TIME_CONFIG = {
     relaunchTimestamp: '2026-04-15T00:00:00Z',
 
     // Development progress
-    devProgress:    '85%',
-    devProgressNum: 85,
+    devProgress:    '88%',
+    devProgressNum: 88,
 
     // Tokenomics
     blockReward:    '100 TIME',
@@ -43,8 +43,8 @@ const TIME_CONFIG = {
     contributors:     '100+',
 
     // Banner / summary strings (shown in dev notice bar and progress section)
-    devNotice:    'Re-launch April 15, 2026 at 00:00 GMT \u2022 Node v1.5.5 Released \u2022 Wallet v0.6.6 Available',
-    progressInfo: 'Node v1.5.5 \u2022 Wallet v0.6.6 \u2022 Security Audit Passed \u2022 Mainnet Active \u2022 TLS Fully Implemented \u2022 On-Chain Governance Live',
+    devNotice:    'Re-launch April 15, 2026 at 00:00 GMT \u2022 Node v1.5.7 Released \u2022 Wallet v0.6.6 Available',
+    progressInfo: 'Node v1.5.7 \u2022 Wallet v0.6.6 \u2022 Security Audit Passed \u2022 Mainnet Active \u2022 TLS Fully Implemented \u2022 On-Chain Governance Live',
 
     // Social links
     social: {

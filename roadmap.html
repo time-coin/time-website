@@ -409,7 +409,7 @@
                 <div class="progress-percentage" data-config="devProgress">85%</div>
             </div>
             <div class="progress-bar-container">
-                <div class="progress-bar" style="width: 85%"></div>
+                <div class="progress-bar" style="width: 88%"></div>
             </div>
             <div class="progress-info" data-config="progressInfo">
                 Node v1.5.5 • Wallet v0.6.6 • Security Audit Passed • Mainnet Active • TLS Fully Implemented • On-Chain Governance Live
@@ -555,11 +555,11 @@
                     <div class="timeline-phase">Phase 6 - Governance &amp; Ecosystem</div>
                     <h3 class="timeline-title">On-Chain Governance, SDKs &amp; Developer Tools</h3>
                     <div class="timeline-date">Q1 2026 • Largely Complete</div>
-                    <p class="timeline-description">Masternode holders can now vote on-chain via the governance dashboard. WebSocket event subscriptions are live. Community treasury and additional developer tooling to follow.</p>
+                    <p class="timeline-description">Masternode holders can now vote on-chain via the governance dashboard. Community treasury and additional developer tooling to follow. Extended WebSocket event subscriptions (block events, masternode changes) are in progress.</p>
                     <ul class="timeline-tasks">
                         <li class="completed">On-chain governance proposals &amp; masternode voting</li>
                         <li class="completed">Governance TUI dashboard (vote / reject interface)</li>
-                        <li class="completed">WebSocket subscription extensions (block events, masternode changes, governance votes)</li>
+                        <li>WebSocket subscription extensions (block events, masternode changes, governance votes)</li>
                         <li>Community treasury (portion of block rewards, governed by vote)</li>
                         <li>Fee schedule governance (masternodes can propose fee changes)</li>
                         <li>Rust and/or Python SDK for the RPC API</li>
@@ -637,6 +637,16 @@
                     <tr style="border-bottom: 1px solid rgba(255,255,255,0.07);">
                         <td style="padding: 10px 16px;"><strong>1.5.5</strong></td>
                         <td style="padding: 10px 16px;">TLS for RPC, partition detection, on-chain governance, WebSocket events, consensus &amp; fork resolution fixes, API stubs</td>
+                        <td style="padding: 10px 16px;"><span class="status-badge status-completed" style="font-size:0.75rem;">Released</span></td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.07);">
+                        <td style="padding: 10px 16px;"><strong>1.5.6</strong></td>
+                        <td style="padding: 10px 16px;">Signed masternode collateral deregistration, outbound masternode tier announcement fix, tier-upgrade collateral-churn guard fix</td>
+                        <td style="padding: 10px 16px;"><span class="status-badge status-completed" style="font-size:0.75rem;">Released</span></td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.07);">
+                        <td style="padding: 10px 16px;"><strong>1.5.7</strong></td>
+                        <td style="padding: 10px 16px;">Collateral validity via UTXO set, targeted <code>releasecollateral</code> RPC, watchdog as systemd service, masternode activity &amp; uptime fixes</td>
                         <td style="padding: 10px 16px;"><span class="status-badge status-completed" style="font-size:0.75rem;">Released</span></td>
                     </tr>
                     <tr style="border-bottom: 1px solid rgba(255,255,255,0.07);">

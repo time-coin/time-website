@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIME Coin Documentation</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/main.css">
+
+    <!-- Site-wide config -->
+    <script src="js/config.js"></script>
+    <!-- Markdown renderer (bundled locally) -->
+    <script src="js/marked.umd.min.js"></script>
+    <!-- Header/Footer Includes -->
+    <script src="js/includes.js" defer></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0f0c29;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding-top: 110px;
+        }
+
+        /* ── Layout ── */
+        .docs-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: calc(100vh - 110px);
+        }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            background: rgba(255,255,255,0.03);
+            border-right: 1px solid rgba(255,255,255,0.1);
+            padding: 30px 0;
+            position: sticky;
+            top: 110px;
+            height: calc(100vh - 110px);
+            overflow-y: auto;
+        }
+
+        .sidebar-logo {
+            padding: 0 25px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #667eea;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-back {
+            display: block;
+            padding: 8px 25px;
+            color: #b8b8d4;
+            text-decoration: none;
+            font-size: 13px;
+            margin-bottom: 10px;
+            transition: color 0.2s;
+        }
+        .sidebar-back:hover { color: #667eea; }
+
+        .nav-section { margin-bottom: 28px; }
+
+        .nav-title {
+            padding: 0 25px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #667eea;
+            margin-bottom: 8px;
+            letter-spacing: 0.8px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 7px 25px;
+            color: #b8b8d4;
+            text-decoration: none;
+            font-size: 13px;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .nav-link:hover {
+            background: rgba(102,126,234,0.1);
+            color: #fff;
+            border-left-color: #667eea;
+        }
+        .nav-link.active {
+            background: rgba(102,126,234,0.15);
+            color: #fff;
+            border-left-color: #667eea;
+            font-weight: 600;
+        }
+        .nav-link.toc-h3 { padding-left: 38px; font-size: 12px; }
+
+        /* ── Main content ── */
+        .content {
+            padding: 40px 60px;
+            max-width: 920px;
+            min-width: 0;
+        }
+
+        /* Rendered Markdown styles */
+        .content h1 {
+            font-size: 40px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+        .content h2 {
+            font-size: 28px;
+            margin-top: 50px;
+            margin-bottom: 16px;
+            color: #ffffff;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(102,126,234,0.3);
+        }
+        .content h3 {
+            font-size: 20px;
+            margin-top: 32px;
+            margin-bottom: 12px;
+            color: #667eea;
+        }
+        .content h4 {
+            font-size: 16px;
+            margin-top: 24px;
+            margin-bottom: 8px;
+            color: #a78bfa;
+            font-weight: 600;
+        }
+        .content p { margin-bottom: 14px; color: #b8b8d4; }
+        .content ul, .content ol { margin: 12px 0 12px 24px; color: #b8b8d4; }
+        .content li { margin: 6px 0; }
+        .content li > ul, .content li > ol { margin-top: 4px; }
+
+        .content a { color: #667eea; text-decoration: none; }
+        .content a:hover { text-decoration: underline; }
+
+        .content strong { color: #e0e0e0; }
+        .content em { color: #c4b5fd; }
+
+        .content hr {
+            border: none;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin: 40px 0;
+        }
+
+        .content blockquote {
+            border-left: 4px solid #667eea;
+            background: rgba(102,126,234,0.08);
+            padding: 14px 20px;
+            margin: 20px 0;
+            border-radius: 0 6px 6px 0;
+            color: #b8b8d4;
+            font-style: italic;
+        }
+        .content blockquote p { margin-bottom: 0; color: inherit; }
+        .content blockquote strong { color: #c4b5fd; }
+
+        .content code {
+            background: rgba(255,255,255,0.06);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #4ade80;
+            font-size: 13px;
+        }
+
+        .content pre {
+            background: rgba(0,0,0,0.35);
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border: 1px solid rgba(102,126,234,0.2);
+            position: relative;
+        }
+        .content pre code {
+            background: none;
+            padding: 0;
+            color: #e0e0e0;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* Copy button */
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 4px 10px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #94a3b8;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s, border-color 0.15s;
+            user-select: none;
+            line-height: 1.4;
+        }
+        .copy-btn:hover { background: rgba(102,126,234,0.25); color: #e2e8f0; border-color: #667eea; }
+        .copy-btn.copied { color: #34d399; border-color: #34d399; background: rgba(52,211,153,0.1); }
+
+        /* Tables */
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            display: block;
+            overflow-x: auto;
+            font-size: 14px;
+        }
+        .content th {
+            background: rgba(102,126,234,0.2);
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.1);
+            white-space: nowrap;
+        }
+        .content td {
+            padding: 10px 14px;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #b8b8d4;
+            vertical-align: top;
+        }
+        .content tr:hover td { background: rgba(255,255,255,0.02); }
+
+        /* Checkboxes in MD task lists */
+        .content input[type="checkbox"] { margin-right: 6px; accent-color: #667eea; }
+
+        /* Status / callout boxes derived from blockquotes */
+        .content .callout-info {
+            background: rgba(102,126,234,0.1);
+            border-left: 4px solid #667eea;
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        .content .callout-warn {
+            background: rgba(234,179,8,0.08);
+            border-left: 4px solid #eab308;
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        /* Loading / error states */
+        .loading-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 40px;
+            color: #b8b8d4;
+            gap: 16px;
+        }
+        .loading-spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid rgba(102,126,234,0.2);
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .error-state {
+            padding: 60px 40px;
+            text-align: center;
+        }
+        .error-state h2 { color: #f87171; margin-bottom: 12px; font-size: 24px; }
+        .error-state p { color: #b8b8d4; margin-bottom: 20px; }
+        .error-state a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Doc index card grid (shown when no ?doc param) */
+        .doc-index-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .doc-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 24px;
+            text-decoration: none;
+            transition: all 0.25s;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .doc-card:hover {
+            border-color: rgba(102,126,234,0.5);
+            background: rgba(102,126,234,0.08);
+            transform: translateY(-3px);
+        }
+        .doc-card-icon { font-size: 28px; }
+        .doc-card-title { font-size: 16px; font-weight: 700; color: #fff; }
+        .doc-card-desc { font-size: 13px; color: #b8b8d4; line-height: 1.5; }
+        .doc-card-audience {
+            font-size: 11px;
+            font-weight: 600;
+            color: #667eea;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: auto;
+            padding-top: 8px;
+        }
+
+        /* Mobile sidebar toggle */
+        .docs-mobile-toggle {
+            display: none;
+            justify-content: flex-end;
+            padding: 14px 20px 0;
+        }
+        .mobile-menu-button {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+        }
+        .mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            z-index: 2999;
+        }
+        .mobile-menu-overlay.active { display: block; }
+
+        .mobile-sidebar {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 280px;
+            height: 100vh;
+            background: #0f0c29;
+            border-left: 1px solid rgba(255,255,255,0.1);
+            z-index: 3000;
+            overflow-y: auto;
+            transition: right 0.3s ease;
+            padding: 20px 0;
+        }
+        .mobile-sidebar.active { right: 0; }
+        .mobile-sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 25px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
+        .mobile-sidebar-title { font-size: 16px; font-weight: bold; color: #667eea; }
+        .mobile-close-button {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 28px;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        @media (max-width: 968px) {
+            body { padding-top: 100px; }
+            .docs-container { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+            .docs-mobile-toggle { display: flex; }
+            .mobile-menu-button { display: inline-flex; align-items: center; }
+            .mobile-sidebar { display: block; }
+            .content { padding: 20px 16px; }
+            .content h1 { font-size: 28px; }
+            .content h2 { font-size: 22px; margin-top: 36px; }
+            .content h3 { font-size: 18px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header injected by includes.js -->
+
+    <div class="docs-mobile-toggle">
+        <button class="mobile-menu-button" onclick="toggleMobileMenu()" aria-label="Open documentation navigation">☰</button>
+    </div>
+
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
+
+    <aside class="mobile-sidebar" id="mobileSidebar">
+        <div class="mobile-sidebar-header">
+            <div class="mobile-sidebar-title">Documentation</div>
+            <button class="mobile-close-button" onclick="toggleMobileMenu()">×</button>
+        </div>
+        <div id="mobileSidebarContent"><!-- populated by JS --></div>
+    </aside>
+
+    <div class="docs-container">
+        <aside class="sidebar" id="desktopSidebar">
+            <!-- populated by JS -->
+        </aside>
+
+        <main class="content" id="mainContent">
+            <div class="loading-state" id="loadingState">
+                <div class="loading-spinner"></div>
+                <span>Loading documentation…</span>
+            </div>
+        </main>
+    </div>
+
+    <script>
+    // ── Doc registry ──────────────────────────────────────────────────────────
+    const DOCS = [
+        {
+            id:       'QUICKSTART',
+            file:     'docs/QUICKSTART.md',
+            title:    'Quick Start',
+            icon:     '🚀',
+            section:  'Getting Started',
+            audience: 'Developers',
+            desc:     'Build, test, and run TIME Coin nodes locally. Multi-node dev setup and monitoring.',
+        },
+        {
+            id:       'LINUX_INSTALLATION',
+            file:     'docs/LINUX_INSTALLATION.md',
+            title:    'Linux Installation',
+            icon:     '🐧',
+            section:  'Getting Started',
+            audience: 'Node Operators',
+            desc:     'Step-by-step guide from a fresh Linux server to a running, hardened masternode.',
+        },
+        {
+            id:       'MASTERNODE_GUIDE',
+            file:     'docs/MASTERNODE_GUIDE.md',
+            title:    'Masternode Guide',
+            icon:     '🖥️',
+            section:  'Operations',
+            audience: 'Masternode Operators',
+            desc:     'Tiers, collateral, rewards, reward rotation, deregistration, and operator FAQ.',
+        },
+        {
+            id:       'CLI_GUIDE',
+            file:     'docs/CLI_GUIDE.md',
+            title:    'CLI Reference',
+            icon:     '⌨️',
+            section:  'Operations',
+            audience: 'All Users',
+            desc:     'Full command reference for time-cli — wallet, transactions, masternode, admin.',
+        },
+        {
+            id:       'GOVERNANCE',
+            file:     'docs/GOVERNANCE.md',
+            title:    'Governance',
+            icon:     '🗳️',
+            section:  'Governance',
+            audience: 'Masternode Operators',
+            desc:     'On-chain proposal lifecycle, voting weights, and RPC reference.',
+        },
+        {
+            id:       'QUICK_REFERENCE',
+            file:     'docs/QUICK_REFERENCE.md',
+            title:    'Quick Reference',
+            icon:     '📋',
+            section:  'Reference',
+            audience: 'All Users',
+            desc:     'One-page parameter lookup — ports, config options, fee schedule, RPC cheat-sheet.',
+        },
+    ];
+
+    // ── State ─────────────────────────────────────────────────────────────────
+    let currentDoc = null;
+
+    // ── Routing ───────────────────────────────────────────────────────────────
+    function getDocParam() {
+        return new URLSearchParams(window.location.search).get('doc');
+    }
+
+    function navigateTo(docId, pushState = true) {
+        const doc = DOCS.find(d => d.id === docId);
+        if (!doc) { renderIndex(); return; }
+        if (pushState) {
+            history.pushState({ docId }, '', '?doc=' + docId);
+        }
+        renderDoc(doc);
+    }
+
+    window.addEventListener('popstate', e => {
+        const id = e.state && e.state.docId;
+        if (id) renderDoc(DOCS.find(d => d.id === id));
+        else renderIndex();
+    });
+
+    // ── Sidebar ───────────────────────────────────────────────────────────────
+    function buildSidebarHTML(activeId, toc) {
+        const sections = [...new Set(DOCS.map(d => d.section))];
+        let html = `
+            <div class="sidebar-logo">Documentation</div>
+            <a class="sidebar-back" href="docs.html">← Docs Overview</a>`;
+
+        sections.forEach(sec => {
+            html += `<div class="nav-section"><div class="nav-title">${sec}</div>`;
+            DOCS.filter(d => d.section === sec).forEach(d => {
+                const cls = d.id === activeId ? 'nav-link active' : 'nav-link';
+                html += `<a class="${cls}" href="?doc=${d.id}">${d.icon} ${d.title}</a>`;
+            });
+            html += '</div>';
+        });
+
+        if (toc && toc.length) {
+            html += `<div class="nav-section"><div class="nav-title">On This Page</div>`;
+            toc.forEach(item => {
+                const cls = item.level === 3 ? 'nav-link toc-h3' : 'nav-link';
+                html += `<a class="${cls}" href="#${item.anchor}">${item.text}</a>`;
+            });
+            html += '</div>';
+        }
+
+        html += `<div style="padding:20px 25px;border-top:1px solid rgba(255,255,255,0.08);margin-top:20px;">
+            <a href="docs.html" style="display:block;padding:10px;background:rgba(102,126,234,0.15);color:#667eea;text-decoration:none;border-radius:8px;text-align:center;font-size:13px;font-weight:600;">← Back to Docs</a>
+        </div>`;
+        return html;
+    }
+
+    function setSidebar(html) {
+        document.getElementById('desktopSidebar').innerHTML = html;
+        document.getElementById('mobileSidebarContent').innerHTML = html;
+    }
+
+    // ── TOC extraction ────────────────────────────────────────────────────────
+    function extractTOC(html) {
+        const tmp = document.createElement('div');
+        tmp.innerHTML = html;
+        const toc = [];
+        tmp.querySelectorAll('h2, h3').forEach(el => {
+            toc.push({
+                level: parseInt(el.tagName[1]),
+                text:  el.textContent.replace(/[#✅🔄🗓️📚🚀🔐📊📖🎯📞⌨️🐧🖥️🗳️📋]/g, '').trim(),
+                anchor: el.id,
+            });
+        });
+        return toc;
+    }
+
+    // ── Anchors for headings ──────────────────────────────────────────────────
+    function slugify(text) {
+        return text.toLowerCase()
+            .replace(/[^\w\s-]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-')
+            .trim();
+    }
+
+    // ── Marked.js renderer ───────────────────────────────────────────────────
+    function configureMarked() {
+        const renderer = new marked.Renderer();
+
+        // Add id anchors to headings
+        renderer.heading = function(token) {
+            const text = token.text;
+            const level = token.depth;
+            const raw = typeof token.raw === 'string' ? token.raw : text;
+            const id = slugify(raw.replace(/[*_`]/g, ''));
+            return `<h${level} id="${id}">${text}</h${level}>\n`;
+        };
+
+        marked.setOptions({
+            renderer,
+            gfm: true,
+            breaks: false,
+            pedantic: false,
+        });
+    }
+
+    // ── Add copy buttons to code blocks ──────────────────────────────────────
+    function addCopyButtons(container) {
+        container.querySelectorAll('pre').forEach(pre => {
+            const btn = document.createElement('button');
+            btn.className = 'copy-btn';
+            btn.textContent = 'Copy';
+            btn.addEventListener('click', () => {
+                const code = pre.querySelector('code');
+                navigator.clipboard.writeText(code ? code.textContent : pre.textContent).then(() => {
+                    btn.textContent = 'Copied!';
+                    btn.classList.add('copied');
+                    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+                });
+            });
+            pre.appendChild(btn);
+        });
+    }
+
+    // ── Smooth-scroll for sidebar TOC links ──────────────────────────────────
+    function bindTocLinks() {
+        document.querySelectorAll('.nav-link[href^="#"]').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const target = document.getElementById(link.getAttribute('href').slice(1));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                closeMobileMenu();
+            });
+        });
+    }
+
+    // ── Active TOC highlight on scroll ───────────────────────────────────────
+    function bindScrollSpy() {
+        const headings = document.querySelectorAll('.content h2, .content h3');
+        if (!headings.length) return;
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                const active = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+                if (active) active.classList.add('active');
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+        headings.forEach(h => obs.observe(h));
+    }
+
+    // ── Title update ─────────────────────────────────────────────────────────
+    function setPageTitle(title) {
+        document.title = title + ' — TIME Coin Documentation';
+    }
+
+    // ── Render: index ─────────────────────────────────────────────────────────
+    function renderIndex() {
+        setPageTitle('Documentation');
+        setSidebar(buildSidebarHTML(null, null));
+
+        const sections = [...new Set(DOCS.map(d => d.section))];
+        let html = '<h1>Documentation</h1>';
+        html += '<p style="color:#b8b8d4;font-size:16px;margin-bottom:8px;">Operational guides, CLI reference, and governance docs for TIME Coin node operators and developers.</p>';
+
+        sections.forEach(sec => {
+            html += `<h2>${sec}</h2><div class="doc-index-grid">`;
+            DOCS.filter(d => d.section === sec).forEach(d => {
+                html += `<a class="doc-card" href="?doc=${d.id}">
+                    <div class="doc-card-icon">${d.icon}</div>
+                    <div class="doc-card-title">${d.title}</div>
+                    <div class="doc-card-desc">${d.desc}</div>
+                    <div class="doc-card-audience">${d.audience}</div>
+                </a>`;
+            });
+            html += '</div>';
+        });
+
+        document.getElementById('mainContent').innerHTML = html;
+    }
+
+    // ── Render: document ─────────────────────────────────────────────────────
+    async function renderDoc(doc) {
+        if (!doc) { renderIndex(); return; }
+        currentDoc = doc;
+        setPageTitle(doc.title);
+
+        const main = document.getElementById('mainContent');
+        main.innerHTML = `<div class="loading-state"><div class="loading-spinner"></div><span>Loading ${doc.title}…</span></div>`;
+        setSidebar(buildSidebarHTML(doc.id, null));
+
+        let md;
+        try {
+            const res = await fetch(doc.file);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            md = await res.text();
+        } catch (err) {
+            main.innerHTML = `<div class="error-state">
+                <h2>Could not load document</h2>
+                <p>${doc.file} — ${err.message}</p>
+                <a href="docs-viewer.html">← Back to documentation index</a>
+            </div>`;
+            return;
+        }
+
+        const html = marked.parse(md);
+        main.innerHTML = html;
+
+        addCopyButtons(main);
+
+        const toc = extractTOC(main.innerHTML);
+        setSidebar(buildSidebarHTML(doc.id, toc));
+        bindTocLinks();
+        bindScrollSpy();
+
+        // Scroll to hash if present
+        const hash = window.location.hash;
+        if (hash) {
+            const target = document.getElementById(hash.slice(1));
+            if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 100);
+        } else {
+            window.scrollTo(0, 0);
+        }
+    }
+
+    // ── Mobile menu ───────────────────────────────────────────────────────────
+    function toggleMobileMenu() {
+        document.getElementById('mobileSidebar').classList.toggle('active');
+        document.getElementById('mobileMenuOverlay').classList.toggle('active');
+    }
+    function closeMobileMenu() {
+        document.getElementById('mobileSidebar').classList.remove('active');
+        document.getElementById('mobileMenuOverlay').classList.remove('active');
+    }
+
+    // ── Boot ──────────────────────────────────────────────────────────────────
+    configureMarked();
+
+    const docParam = getDocParam();
+    if (docParam) {
+        navigateTo(docParam, false);
+    } else {
+        renderIndex();
+    }
+    </script>
+
+    <!-- Footer injected by includes.js -->
+</body>
+</html>

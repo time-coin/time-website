@@ -4,7 +4,7 @@
 **Status:** ✅ Production Ready
 
 > **Deploying to a server?** See
-> **[LINUX_INSTALLATION.md](LINUX_INSTALLATION.md)** for the full
+> **[LINUX_INSTALLATION.md](docs-viewer.html?doc=LINUX_INSTALLATION)** for the full
 > step-by-step production installation guide.
 
 This document is for **developers** who want to build, test, and run TIME Coin
@@ -157,11 +157,11 @@ journalctl -u timetd -p warning --no-pager -n 50
 
 ## 📚 Further Reading
 
-- **[LINUX_INSTALLATION.md](LINUX_INSTALLATION.md)** — Production deployment guide
-- **[MASTERNODE_GUIDE.md](MASTERNODE_GUIDE.md)** — Masternode operations
-- **[CLI_GUIDE.md](CLI_GUIDE.md)** — Full command reference
-- **[TIMECOIN_PROTOCOL.md](TIMECOIN_PROTOCOL.md)** — Protocol specification
-- **[NETWORK_CONFIG.md](NETWORK_CONFIG.md)** — Advanced configuration
+- **[LINUX_INSTALLATION.md](docs-viewer.html?doc=LINUX_INSTALLATION)** — Production deployment guide
+- **[MASTERNODE_GUIDE.md](docs-viewer.html?doc=MASTERNODE_GUIDE)** — Masternode operations
+- **[CLI_GUIDE.md](docs-viewer.html?doc=CLI_GUIDE)** — Full command reference
+- **[TIMECOIN_PROTOCOL.md](docs-viewer.html?doc=TIMECOIN_PROTOCOL)** — Protocol specification
+- **[NETWORK_ARCHITECTURE.md](docs-viewer.html?doc=NETWORK_ARCHITECTURE)** — Advanced configuration
 
 ---
 

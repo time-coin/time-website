@@ -213,7 +213,7 @@ time-cli masternode status
 ```
 Returns status of this node's masternode (if configured).
 
-> **Note:** Masternode registration and deregistration are managed via `time.conf` and `masternode.conf`. See the [Masternode Guide](MASTERNODE_GUIDE.md) for details.
+> **Note:** Masternode registration and deregistration are managed via `time.conf` and `masternode.conf`. See the [Masternode Guide](docs-viewer.html?doc=MASTERNODE_GUIDE) for details.
 
 > **Backward compatibility:** `masternodelist` and `masternodestatus` are still accepted as aliases.
 
@@ -283,7 +283,7 @@ Returns information about the TimeVote consensus:
 
 ### Governance
 
-On-chain governance allows Bronze/Silver/Gold masternodes to submit proposals and vote on protocol changes. See [GOVERNANCE.md](GOVERNANCE.md) for the full reference.
+On-chain governance allows Bronze/Silver/Gold masternodes to submit proposals and vote on protocol changes. See [GOVERNANCE.md](docs-viewer.html?doc=GOVERNANCE) for the full reference.
 
 #### Submit a Proposal
 

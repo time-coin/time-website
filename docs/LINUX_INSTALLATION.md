@@ -458,7 +458,7 @@ unlocked and becomes spendable.
 3. Update `masternode.conf` with the new txid/vout
 4. Set `masternode=1` and restart
 
-See **[MASTERNODE_GUIDE.md](MASTERNODE_GUIDE.md)** for full operational
+See **[MASTERNODE_GUIDE.md](docs-viewer.html?doc=MASTERNODE_GUIDE)** for full operational
 details (reward distribution, collateral validation, rotation, FAQ).
 
 ---
@@ -715,7 +715,7 @@ mn1 abc123...def456 0
 Only needed for staked tiers (Bronze/Silver/Gold). Free tier nodes do not
 need a `masternode.conf` entry.
 
-See **[NETWORK_CONFIG.md](NETWORK_CONFIG.md)** for the full configuration
+See **[NETWORK_ARCHITECTURE.md](docs-viewer.html?doc=NETWORK_ARCHITECTURE)** for the full configuration
 reference.
 
 ---
@@ -953,10 +953,10 @@ Your IP should appear in the returned JSON array.
 
 ## Further Reading
 
-- **[MASTERNODE_GUIDE.md](MASTERNODE_GUIDE.md)** — Tiers, collateral, rewards, deregistration, FAQ
-- **[CLI_GUIDE.md](CLI_GUIDE.md)** — Full command reference
-- **[NETWORK_CONFIG.md](NETWORK_CONFIG.md)** — Advanced network configuration
-- **[COMPREHENSIVE_SECURITY_AUDIT.md](COMPREHENSIVE_SECURITY_AUDIT.md)** — Security analysis
+- **[MASTERNODE_GUIDE.md](docs-viewer.html?doc=MASTERNODE_GUIDE)** — Tiers, collateral, rewards, deregistration, FAQ
+- **[CLI_GUIDE.md](docs-viewer.html?doc=CLI_GUIDE)** — Full command reference
+- **[NETWORK_ARCHITECTURE.md](docs-viewer.html?doc=NETWORK_ARCHITECTURE)** — Advanced network configuration
+- **[COMPREHENSIVE_SECURITY_AUDIT.md](docs-viewer.html?doc=COMPREHENSIVE_SECURITY_AUDIT)** — Security analysis
 
 ---
 

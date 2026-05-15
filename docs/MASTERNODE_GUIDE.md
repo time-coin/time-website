@@ -6,7 +6,7 @@
 
 TIME Coin supports tiered masternodes with locked collateral (Dash-style). Configuration uses two files: `time.conf` (daemon settings and private key) and `masternode.conf` (collateral info). The daemon handles registration on startup.
 
-> **Linux users:** See **[LINUX_INSTALLATION.md](LINUX_INSTALLATION.md)** for
+> **Linux users:** See **[LINUX_INSTALLATION.md](docs-viewer.html?doc=LINUX_INSTALLATION)** for
 > the step-by-step installation guide. This document covers masternode
 > **operations** — tiers, collateral, rewards, monitoring, and management.
 >
@@ -23,7 +23,7 @@ begins earning rewards immediately.
 
 ### Staked Tier (Bronze/Silver/Gold)
 
-See **[LINUX_INSTALLATION.md §5.3](LINUX_INSTALLATION.md#53-staked-tiers-bronze--silver--gold)**
+See **[LINUX_INSTALLATION.md §5.3](docs-viewer.html?doc=LINUX_INSTALLATION#53-staked-tiers-bronze--silver--gold)**
 for the step-by-step collateral setup process.
 
 ---
@@ -269,7 +269,7 @@ time-cli submitproposal treasury <recipient_address> <amount_TIME> "<description
 time-cli submitproposal feeschedule <new_min_fee_TIME> '<[{"upper":100,"rate_bps":100},...]>'
 ```
 
-See [GOVERNANCE.md](GOVERNANCE.md) for the full governance reference.
+See [GOVERNANCE.md](docs-viewer.html?doc=GOVERNANCE) for the full governance reference.
 
 ---
 
@@ -334,7 +334,7 @@ mn1 abc123def456789012345678901234567890123456789012345678901234abcd 0
 
 For detailed step-by-step instructions including key generation, collateral
 creation, and configuration, see
-**[LINUX_INSTALLATION.md §5.3](LINUX_INSTALLATION.md#53-staked-tiers-bronze--silver--gold)**.
+**[LINUX_INSTALLATION.md §5.3](docs-viewer.html?doc=LINUX_INSTALLATION#53-staked-tiers-bronze--silver--gold)**.
 
 After registration, the daemon automatically:
 1. Parses the collateral UTXO from config

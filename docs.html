@@ -561,7 +561,7 @@
             </div>
 
             <h2 id="quick-start">Quick Start</h2>
-            <p>The testnet is live. The fastest way to get started is to install the GUI wallet on your local machine, then optionally set up a masternode on a Linux server.</p>
+            <p>TIME Coin is live on mainnet. The fastest way to get started is to install the GUI wallet on your local machine, then optionally set up a masternode on a Linux server.</p>
 
             <h3>1. Install the Wallet (Local Machine)</h3>
             <p><strong>Windows:</strong> Download and run the installer — no Rust or build tools required.</p>
@@ -614,13 +614,13 @@ sudo bash scripts/install-masternode.sh mainnet</code></pre>
             <p>The easiest way to get started on Windows. No Rust, no compiler, no command line needed.</p>
             <ol>
                 <li>Go to the <a href="https://github.com/time-coin/time-wallet/releases/latest" target="_blank" rel="noopener">latest release page</a> and download <strong>TIMECoinWallet-Setup-x.x.x.exe</strong>.</li>
-                <li>Run the installer. If Windows Defender SmartScreen appears, click <strong>More info → Run anyway</strong> (the app is unsigned during testnet).</li>
+                <li>Run the installer. If Windows Defender SmartScreen appears, click <strong>More info → Run anyway</strong> (the app is not yet code-signed).</li>
                 <li>Follow the setup wizard — choose an install directory and click <strong>Install</strong>.</li>
                 <li>Launch <strong>TIME Coin Wallet</strong> from the Start Menu or Desktop shortcut.</li>
                 <li>On first launch, choose <strong>Create New Wallet</strong> and write down your 12-word seed phrase. Store it somewhere safe — it cannot be recovered if lost.</li>
             </ol>
             <div class="info-box" style="margin-top:16px">
-                <strong>Testnet mode:</strong> The wallet connects to the testnet automatically. Testnet addresses begin with <code>TIME0</code>. Mainnet addresses will begin with <code>TIME1</code> after mainnet launch.
+                <strong>Mainnet:</strong> The wallet connects to the mainnet automatically. Mainnet addresses begin with <code>TIME1</code>.
             </div>
 
             <h3>Windows — ZIP (Portable)</h3>
@@ -1151,8 +1151,8 @@ addnode=98.76.54.32:22345</code></pre>
             <h2 id="sending">Sending TIME</h2>
 
             <div class="info-box">
-                <strong>✅ Available on Testnet</strong><br>
-                Transactions are live on testnet. Use the GUI wallet or <code>time-cli</code> to send and receive TIME. Mainnet launches April 1, 2026.
+                <strong>✅ Live on Mainnet</strong><br>
+                Transactions are live. Use the GUI wallet or <code>time-cli</code> to send and receive TIME. Mainnet launched April 15, 2026.
             </div>
 
             <h3>Via GUI Wallet</h3>
@@ -1296,7 +1296,7 @@ done</code></pre>
 
             <div class="info-box">
                 <strong>🛠️ SDK — Coming Soon</strong><br>
-                Official SDKs for JavaScript, Python, and Rust are in development. Until then, all functionality is accessible via the <strong>JSON-RPC 2.0 API</strong> (port 24101 on testnet) and the <a href="api.html" style="color:var(--primary-purple)">REST API</a>.
+                Official SDKs for JavaScript, Python, and Rust are in development. Until then, all functionality is accessible via the <strong>JSON-RPC 2.0 API</strong> (port 24101 on mainnet) and the <a href="api.html" style="color:var(--primary-purple)">REST API</a>.
             </div>
 
             <p>In the meantime, you can interact with the network directly using the RPC API or <code>time-cli</code>:</p>

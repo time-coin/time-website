@@ -448,6 +448,7 @@
             <div class="nav-section">
                 <div class="nav-title">Wallet & Usage</div>
                 <a href="#wallet-setup" class="nav-link" onclick="toggleMobileMenu()">Wallet Setup</a>
+                <a href="#mobile-wallet-setup" class="nav-link" onclick="toggleMobileMenu()">Mobile Wallet</a>
                 <a href="#buying-time" class="nav-link" onclick="toggleMobileMenu()">Token Distribution</a>
                 <a href="#sending" class="nav-link" onclick="toggleMobileMenu()">Sending TIME</a>
             </div>
@@ -496,6 +497,7 @@
                 <div class="nav-section">
                     <div class="nav-title">Wallet & Usage</div>
                     <a href="#wallet-setup" class="nav-link">Wallet Setup</a>
+                    <a href="#mobile-wallet-setup" class="nav-link">Mobile Wallet</a>
                     <a href="#buying-time" class="nav-link">Token Distribution</a>
                     <a href="#wallet-troubleshooting" class="nav-link">Troubleshooting</a>
                     <a href="#sending" class="nav-link">Sending TIME</a>
@@ -1078,7 +1080,44 @@ addnode=98.76.54.32:22345</code></pre>
                 <strong>Note:</strong> The addnode list is pulled live from the network — click the button again any time to get the latest peers.
             </div>
 
-            <h2 id="buying-time">Token Distribution</h2>
+            <h2 id="mobile-wallet-setup">Mobile Wallet Setup</h2>
+
+            <p>The TIME Coin mobile wallet is a native Android app (iOS coming soon) with BIP-39 HD keys, real-time WebSocket notifications, biometric unlock, and QR send/receive.</p>
+
+            <div class="info-box">
+                <strong>📱 Download</strong><br>
+                <a href="https://github.com/time-coin/time-mobile/releases/latest" target="_blank" rel="noopener" style="color:var(--primary-purple)">⬇ Download the latest APK from GitHub Releases</a><br>
+                Current version: <span data-config="mobileVersion"></span>
+            </div>
+
+            <h3>Install (Android)</h3>
+            <ol>
+                <li>Download <strong>time-mobile-release.apk</strong> from the <a href="https://github.com/time-coin/time-mobile/releases/latest" target="_blank" rel="noopener">latest release</a></li>
+                <li>On your Android device, go to <strong>Settings → Install unknown apps</strong> and allow installs from your browser or file manager</li>
+                <li>Open the downloaded APK and tap <strong>Install</strong></li>
+                <li>Launch the app and choose <strong>Create New Wallet</strong> or <strong>Restore from Seed</strong></li>
+            </ol>
+
+            <h3>Create a New Mobile Wallet</h3>
+            <ol>
+                <li>Tap <strong>Create New Wallet</strong> on the welcome screen</li>
+                <li>The app generates a 12-word BIP-39 seed phrase — write it down offline</li>
+                <li>Set a PIN and optionally enable biometric (fingerprint/face) unlock</li>
+                <li>Your first TIME address is shown on the Overview screen</li>
+            </ol>
+
+            <div class="warning-box">
+                <strong>🔐 Seed Phrase is Everything:</strong> Your 12-word seed phrase is the only way to recover your funds. Write it on paper — never photograph it, store it in a cloud service, or share it with anyone.
+            </div>
+
+            <h3>Restore an Existing Wallet on Mobile</h3>
+            <ol>
+                <li>Tap <strong>Restore Wallet</strong> on the welcome screen</li>
+                <li>Enter your 12 or 24-word BIP-39 seed phrase</li>
+                <li>The app scans for used addresses (BIP-44 gap limit discovery) and restores your balance</li>
+            </ol>
+
+
 
             <p>TIME is distributed exclusively through block rewards — 100 TIME per block, distributed to masternodes and block producers. There is no token purchase mechanism.</p>
 

@@ -11,6 +11,7 @@ const TIME_CONFIG = {
     // Software versions
     nodeVersion:    'v1.5.5',
     walletVersion:  'v0.6.6',
+    mobileVersion:  'v0.5.13',
     mainnetVersion: 'v2.0.0',
 
     // Key dates

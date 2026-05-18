@@ -2001,14 +2001,10 @@
         };
 
         // ── Newsletter ────────────────────────────────────────────────────────
-        let nlAdminKey = null;
-
         async function getNlKey() {
-            if (nlAdminKey) return nlAdminKey;
             const user = auth.currentUser;
             if (!user) return null;
-            nlAdminKey = await user.getIdToken();
-            return nlAdminKey;
+            return user.getIdToken();
         }
 
         window.nlLoadArticles = async function() {

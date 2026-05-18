@@ -1060,6 +1060,17 @@
                     </div>
                 </div>
 
+                <!-- Bulk import -->
+                <div class="section">
+                    <div class="section-header"><span class="section-title">Import Subscribers</span></div>
+                    <p style="color:var(--text-secondary);font-size:13px;margin-bottom:14px;">Upload a CSV with an <code>email</code> column. Existing subscribers are reactivated; duplicates are skipped. No welcome emails are sent.</p>
+                    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                        <input type="file" id="nlImportFile" accept=".csv" style="font-size:13px;color:var(--text-secondary);">
+                        <button onclick="nlImportCSV()" style="padding:8px 18px;background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.3);border-radius:7px;color:#a5b4fc;font-size:13px;font-weight:600;cursor:pointer;">Import</button>
+                        <span id="nlImportMsg" style="font-size:13px;color:var(--text-secondary);"></span>
+                    </div>
+                </div>
+
                 <!-- Subscribers list -->
                 <div class="section">
                     <div class="section-header">
@@ -2767,6 +2778,45 @@
                 headers: { 'Authorization': `Bearer ${key}` },
             });
             tkLoad();
+        };
+
+        window.nlImportCSV = async function() {
+            const key = await getNlKey();
+            if (!key) return;
+            const file = document.getElementById('nlImportFile').files[0];
+            const msg  = document.getElementById('nlImportMsg');
+            if (!file) { msg.textContent = 'Select a CSV file first.'; return; }
+            msg.style.color = 'var(--text-secondary)';
+            msg.textContent = 'Parsing…';
+            const text = await file.text();
+            const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+            if (!lines.length) { msg.textContent = 'CSV is empty.'; return; }
+            // Find email column index from header
+            const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim().toLowerCase());
+            const emailIdx = headers.indexOf('email');
+            if (emailIdx === -1) { msg.textContent = 'No "email" column found in CSV.'; return; }
+            const emails = lines.slice(1).map(l => {
+                const cols = l.split(',');
+                return (cols[emailIdx] || '').replace(/"/g, '').trim();
+            }).filter(Boolean);
+            if (!emails.length) { msg.textContent = 'No email addresses found.'; return; }
+            msg.textContent = `Importing ${emails.length} addresses…`;
+            try {
+                const res  = await fetch('/api/v1/newsletter/admin/subscribers/bulk', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${key}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ emails }),
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Import failed');
+                msg.style.color = '#34d399';
+                msg.textContent = '✓ ' + data.message;
+                document.getElementById('nlImportFile').value = '';
+                nlLoadSubscribers();
+            } catch (err) {
+                msg.style.color = '#ef4444';
+                msg.textContent = '✕ ' + err.message;
+            }
         };
 
         window.nlLoadSubscribers = async function() {

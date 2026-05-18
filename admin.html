@@ -2818,6 +2818,10 @@
             tkLoad();
         };
 
+        async function nlSafeJson(res) {
+            try { return await res.json(); } catch { return {}; }
+        }
+
         window.nlSendCampaign = async function() {
             const key     = await getNlKey();
             if (!key) return;
@@ -2836,8 +2840,8 @@
                     headers: { 'Authorization': `Bearer ${key}`, 'Content-Type': 'application/json' },
                     body: JSON.stringify({ subject, body }),
                 });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.error || 'Send failed');
+                const data = await nlSafeJson(res);
+                if (!res.ok) throw new Error(`${res.status}: ${data.error || res.statusText}`);
                 msg.style.color = '#34d399';
                 msg.textContent = '✓ ' + data.message;
                 document.getElementById('nlCampSubject').value = '';
@@ -2896,8 +2900,8 @@
                     headers: { 'Authorization': `Bearer ${key}`, 'Content-Type': 'application/json' },
                     body: JSON.stringify({ emails }),
                 });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.error || 'Import failed');
+                const data = await nlSafeJson(res);
+                if (!res.ok) throw new Error(`${res.status}: ${data.error || res.statusText}`);
                 msg.style.color = '#34d399';
                 msg.textContent = '✓ ' + data.message;
                 document.getElementById('nlImportFile').value = '';

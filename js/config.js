@@ -10,7 +10,7 @@
 const TIME_CONFIG = {
     // Software versions
     nodeVersion:    'v1.5.8',
-    walletVersion:  'v0.6.7',
+    walletVersion:  'v0.6.8',
     mobileVersion:  'v0.5.13',
     mainnetVersion: 'v2.0.0',
 
@@ -43,8 +43,8 @@ const TIME_CONFIG = {
     contributors:     '100+',
 
     // Banner / summary strings (shown in dev notice bar and progress section)
-    devNotice:    'Re-launch April 15, 2026 at 00:00 GMT \u2022 Node v1.5.8 Released \u2022 Wallet v0.6.7 Available',
-    progressInfo: 'Node v1.5.8 \u2022 Wallet v0.6.7 \u2022 Security Audit Passed \u2022 Mainnet Active \u2022 TLS Fully Implemented \u2022 On-Chain Governance Live',
+    devNotice:    'Re-launch April 15, 2026 at 00:00 GMT \u2022 Node v1.5.8 Released \u2022 Wallet v0.6.8 Available',
+    progressInfo: 'Node v1.5.8 \u2022 Wallet v0.6.8 \u2022 Security Audit Passed \u2022 Mainnet Active \u2022 TLS Fully Implemented \u2022 On-Chain Governance Live \u2022 Block Explorer Live',
 
     // Social links
     social: {

@@ -1032,10 +1032,36 @@
                     <div id="nlArticleList"><p style="color:var(--text-secondary);font-size:14px;">No articles yet.</p></div>
                 </div>
 
+                <!-- Compose freeform campaign -->
+                <div class="section">
+                    <div class="section-header"><span class="section-title">Compose Campaign</span></div>
+                    <p style="color:var(--text-secondary);font-size:13px;margin-bottom:14px;">Send a freeform email to all active subscribers.</p>
+                    <div style="display:grid;gap:12px;">
+                        <div>
+                            <label style="font-size:13px;color:var(--text-secondary);display:block;margin-bottom:6px;">Subject</label>
+                            <input type="text" id="nlCampSubject" placeholder="e.g. TIME Coin — May 2026 Update"
+                                style="width:100%;padding:9px 12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:7px;color:#fff;font-size:14px;box-sizing:border-box;">
+                        </div>
+                        <div>
+                            <label style="font-size:13px;color:var(--text-secondary);display:block;margin-bottom:6px;">Body</label>
+                            <textarea id="nlCampBody" rows="12" placeholder="Write your message here…"
+                                oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"
+                                style="width:100%;padding:9px 12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:7px;color:#fff;font-size:13px;line-height:1.6;resize:none;box-sizing:border-box;font-family:inherit;overflow:hidden;"></textarea>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+                            <button onclick="nlSendCampaign()" id="nlCampBtn"
+                                style="padding:10px 24px;background:linear-gradient(135deg,#667eea,#764ba2);border:none;border-radius:7px;color:#fff;font-size:14px;font-weight:600;cursor:pointer;">
+                                Send to All Subscribers
+                            </button>
+                            <span id="nlCampMsg" style="font-size:13px;color:var(--text-secondary);"></span>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Send to mailing list -->
                 <div class="section">
                     <div class="section-header">
-                        <span class="section-title">Send to Mailing List</span>
+                        <span class="section-title">Send Article to Mailing List</span>
                     </div>
                     <p style="color:var(--text-secondary);font-size:13px;margin-bottom:14px;">Select a published article and send it to all active subscribers.</p>
                     <div style="display:grid;gap:10px;">
@@ -2778,6 +2804,38 @@
                 headers: { 'Authorization': `Bearer ${key}` },
             });
             tkLoad();
+        };
+
+        window.nlSendCampaign = async function() {
+            const key     = await getNlKey();
+            if (!key) return;
+            const subject = document.getElementById('nlCampSubject').value.trim();
+            const body    = document.getElementById('nlCampBody').value.trim();
+            const btn     = document.getElementById('nlCampBtn');
+            const msg     = document.getElementById('nlCampMsg');
+            if (!subject || !body) { msg.textContent = 'Subject and body are required.'; return; }
+            if (!confirm(`Send this campaign to all active subscribers?`)) return;
+            btn.disabled = true;
+            msg.style.color = 'var(--text-secondary)';
+            msg.textContent = 'Sending…';
+            try {
+                const res  = await fetch('/api/v1/newsletter/admin/subscribers/send-campaign', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${key}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ subject, body }),
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Send failed');
+                msg.style.color = '#34d399';
+                msg.textContent = '✓ ' + data.message;
+                document.getElementById('nlCampSubject').value = '';
+                document.getElementById('nlCampBody').value    = '';
+            } catch (err) {
+                msg.style.color = '#ef4444';
+                msg.textContent = '✕ ' + err.message;
+            } finally {
+                btn.disabled = false;
+            }
         };
 
         window.nlImportCSV = async function() {

@@ -34,7 +34,7 @@ This repository contains the complete TIME Coin marketing and documentation webs
 - **👥 Community** (`community.html`) - Community hub with social links
 - **📰 Press Kit** (`press.html`) - Media resources and brand assets
 - **💱 Exchange** (`exchange.html`) - Exchange listings and trading info
-- **🔍 Explorer** (`explorer.html`) - Testnet block explorer
+- **🔍 Explorer** (`explorer.html`) - Live block explorer (mainnet & testnet)
 
 ### Key Features
 - ✅ Responsive design (mobile, tablet, desktop)
@@ -271,7 +271,7 @@ Planned improvements for the website:
 
 - [ ] Blog/News section
 - [ ] Multilingual support (translations)
-- [ ] Interactive blockchain explorer preview
+- [x] Block explorer — live at [explorer.html](explorer.html)
 - [ ] Live masternode statistics
 - [ ] Community forum integration
 - [ ] Video tutorials section
@@ -307,4 +307,4 @@ Planned improvements for the website:
 
 Made with ⏰ by the TIME Coin community
 
-Last Updated: March 2026
+Last Updated: May 2026

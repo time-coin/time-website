@@ -2924,7 +2924,10 @@
             if (!key) return;
             try {
                 const res = await fetch(`/api/v1/newsletter/admin/subscribers/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${key}` } });
-                if (!res.ok) throw new Error('Delete failed');
+                if (!res.ok) {
+                    const data = await res.json().catch(() => ({}));
+                    throw new Error(`Delete failed (${res.status}): ${data.error || res.statusText}`);
+                }
                 nlLoadSubscribers();
             } catch (err) { alert(err.message); }
         };

@@ -1043,10 +1043,26 @@
                                 style="width:100%;padding:9px 12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:7px;color:#fff;font-size:14px;box-sizing:border-box;">
                         </div>
                         <div>
-                            <label style="font-size:13px;color:var(--text-secondary);display:block;margin-bottom:6px;">Body</label>
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                                <label style="font-size:13px;color:var(--text-secondary);">Body (Markdown supported)</label>
+                                <button type="button" onclick="nlCampTogglePreview()" id="nlCampPreviewBtn"
+                                    style="padding:5px 12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:6px;color:var(--text-secondary);font-size:12px;cursor:pointer;">👁 Preview</button>
+                            </div>
                             <textarea id="nlCampBody" rows="12" placeholder="Write your message here…"
-                                oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"
+                                oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';nlCampUpdatePreview()"
                                 style="width:100%;padding:9px 12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:7px;color:#fff;font-size:13px;line-height:1.6;resize:none;box-sizing:border-box;font-family:inherit;overflow:hidden;"></textarea>
+                            <!-- Email preview panel -->
+                            <div id="nlCampPreview" style="display:none;margin-top:12px;border:1px solid rgba(255,255,255,0.1);border-radius:8px;overflow:hidden;font-family:Arial,sans-serif;">
+                                <div style="background:linear-gradient(135deg,#667eea,#764ba2);padding:18px 24px;">
+                                    <div style="color:#fff;font-size:18px;font-weight:700;">⏰ TIME Coin</div>
+                                    <div style="color:rgba(255,255,255,0.75);font-size:12px;margin-top:2px;">Newsletter</div>
+                                </div>
+                                <div style="background:#fff;padding:24px 28px;">
+                                    <div id="nlCampPreviewBody" style="color:#444;line-height:1.75;font-size:15px;"></div>
+                                    <hr style="border:none;border-top:1px solid #eee;margin:24px 0;">
+                                    <p style="color:#999;font-size:12px;margin:0;">You're receiving this because you subscribed at time-coin.io · <span style="color:#667eea;">Unsubscribe</span></p>
+                                </div>
+                            </div>
                         </div>
                         <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
                             <button onclick="nlSendCampaign()" id="nlCampBtn"
@@ -2831,6 +2847,25 @@
                 msg.textContent = '✕ ' + err.message;
             } finally {
                 btn.disabled = false;
+            }
+        };
+
+        window.nlCampUpdatePreview = function() {
+            const preview = document.getElementById('nlCampPreview');
+            if (preview.style.display === 'none') return;
+            document.getElementById('nlCampPreviewBody').innerHTML = nlRenderMd(document.getElementById('nlCampBody').value);
+        };
+
+        window.nlCampTogglePreview = function() {
+            const preview = document.getElementById('nlCampPreview');
+            const btn     = document.getElementById('nlCampPreviewBtn');
+            if (preview.style.display === 'none') {
+                preview.style.display = 'block';
+                btn.textContent = '✕ Hide Preview';
+                nlCampUpdatePreview();
+            } else {
+                preview.style.display = 'none';
+                btn.textContent = '👁 Preview';
             }
         };
 

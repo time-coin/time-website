@@ -739,6 +739,7 @@
                 <button class="tab-btn" onclick="switchTab('press', this)">Press Releases</button>
                 <button class="tab-btn" onclick="switchTab('campaigns', this)">Email Campaigns</button>
                 <button class="tab-btn" onclick="switchTab('newsletter', this)">Newsletter</button>
+                <button class="tab-btn" onclick="switchTab('sub-campaigns', this)">Subscriber Emails</button>
                 <button class="tab-btn" onclick="switchTab('masternode-updates', this)">Masternode Updates</button>
                 <button class="tab-btn" onclick="switchTab('proposals', this)">Proposals</button>
                 <button class="tab-btn" onclick="switchTab('analytics', this)">Analytics</button>
@@ -1032,6 +1033,33 @@
                     <div id="nlArticleList"><p style="color:var(--text-secondary);font-size:14px;">No articles yet.</p></div>
                 </div>
 
+                <!-- Bulk import -->
+                <div class="section">
+                    <div class="section-header"><span class="section-title">Import Subscribers</span></div>
+                    <p style="color:var(--text-secondary);font-size:13px;margin-bottom:14px;">Upload a CSV with an <code>email</code> column. Existing subscribers are reactivated; duplicates are skipped. No welcome emails are sent.</p>
+                    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                        <input type="file" id="nlImportFile" accept=".csv" style="font-size:13px;color:var(--text-secondary);">
+                        <button onclick="nlImportCSV()" style="padding:8px 18px;background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.3);border-radius:7px;color:#a5b4fc;font-size:13px;font-weight:600;cursor:pointer;">Import</button>
+                        <span id="nlImportMsg" style="font-size:13px;color:var(--text-secondary);"></span>
+                    </div>
+                </div>
+
+                <!-- Subscribers list -->
+                <div class="section">
+                    <div class="section-header">
+                        <span class="section-title">Subscribers</span>
+                        <button onclick="nlLoadSubscribers()" style="padding:6px 14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:6px;color:var(--text-secondary);font-size:12px;cursor:pointer;">↻ Refresh</button>
+                    </div>
+                    <div id="nlSubStats" style="display:flex;gap:20px;margin-bottom:16px;flex-wrap:wrap;"></div>
+                    <div id="nlSubList"><p style="color:var(--text-secondary);font-size:14px;">Loading…</p></div>
+                </div>
+            </div>
+
+            <!-- Subscriber Emails tab -->
+            <div id="tab-sub-campaigns" class="tab-panel">
+                <h1 class="dash-title">Subscriber Emails</h1>
+                <p class="dash-subtitle">Compose and send emails to newsletter subscribers, and view sent campaign history.</p>
+
                 <!-- Compose freeform campaign -->
                 <div class="section">
                     <div class="section-header"><span class="section-title">Compose Campaign</span></div>
@@ -1051,7 +1079,6 @@
                             <textarea id="nlCampBody" rows="12" placeholder="Write your message here…"
                                 oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';nlCampUpdatePreview()"
                                 style="width:100%;padding:9px 12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:7px;color:#fff;font-size:13px;line-height:1.6;resize:none;box-sizing:border-box;font-family:inherit;overflow:hidden;"></textarea>
-                            <!-- Email preview panel -->
                             <div id="nlCampPreview" style="display:none;margin-top:12px;border:1px solid rgba(255,255,255,0.1);border-radius:8px;overflow:hidden;font-family:Arial,sans-serif;">
                                 <div style="background:linear-gradient(135deg,#667eea,#764ba2);padding:18px 24px;">
                                     <div style="color:#fff;font-size:18px;font-weight:700;">⏰ TIME Coin</div>
@@ -1074,11 +1101,9 @@
                     </div>
                 </div>
 
-                <!-- Send to mailing list -->
+                <!-- Send article to mailing list -->
                 <div class="section">
-                    <div class="section-header">
-                        <span class="section-title">Send Article to Mailing List</span>
-                    </div>
+                    <div class="section-header"><span class="section-title">Send Article to Mailing List</span></div>
                     <p style="color:var(--text-secondary);font-size:13px;margin-bottom:14px;">Select a published article and send it to all active subscribers.</p>
                     <div style="display:grid;gap:10px;">
                         <div>
@@ -1102,25 +1127,13 @@
                     </div>
                 </div>
 
-                <!-- Bulk import -->
-                <div class="section">
-                    <div class="section-header"><span class="section-title">Import Subscribers</span></div>
-                    <p style="color:var(--text-secondary);font-size:13px;margin-bottom:14px;">Upload a CSV with an <code>email</code> column. Existing subscribers are reactivated; duplicates are skipped. No welcome emails are sent.</p>
-                    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-                        <input type="file" id="nlImportFile" accept=".csv" style="font-size:13px;color:var(--text-secondary);">
-                        <button onclick="nlImportCSV()" style="padding:8px 18px;background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.3);border-radius:7px;color:#a5b4fc;font-size:13px;font-weight:600;cursor:pointer;">Import</button>
-                        <span id="nlImportMsg" style="font-size:13px;color:var(--text-secondary);"></span>
-                    </div>
-                </div>
-
-                <!-- Subscribers list -->
+                <!-- Campaign history -->
                 <div class="section">
                     <div class="section-header">
-                        <span class="section-title">Subscribers</span>
-                        <button onclick="nlLoadSubscribers()" style="padding:6px 14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:6px;color:var(--text-secondary);font-size:12px;cursor:pointer;">↻ Refresh</button>
+                        <span class="section-title">Campaign History</span>
+                        <button onclick="nlLoadCampaignHistory()" style="padding:6px 14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:6px;color:var(--text-secondary);font-size:12px;cursor:pointer;">↻ Refresh</button>
                     </div>
-                    <div id="nlSubStats" style="display:flex;gap:20px;margin-bottom:16px;flex-wrap:wrap;"></div>
-                    <div id="nlSubList"><p style="color:var(--text-secondary);font-size:14px;">Loading…</p></div>
+                    <div id="nlCampHistory"><p style="color:var(--text-secondary);font-size:14px;">No campaigns sent yet.</p></div>
                 </div>
             </div>
 
@@ -1191,6 +1204,14 @@
                     </div>
                     <div id="mnCampaignsList" style="display:flex;flex-direction:column;gap:8px;">
                         <p style="color:var(--text-secondary);font-size:13px;margin:0;">Loading…</p>
+                    </div>
+                </div>
+
+                <!-- Subscriber campaign view modal -->
+                <div id="nlCampModal" onclick="if(event.target===this)this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center;">
+                    <div style="background:#1e1e2e;border:1px solid rgba(255,255,255,0.12);border-radius:12px;max-width:640px;width:calc(100vw - 40px);max-height:80vh;overflow-y:auto;padding:28px 32px;position:relative;">
+                        <button onclick="document.getElementById('nlCampModal').style.display='none'" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--text-secondary);font-size:20px;cursor:pointer;">✕</button>
+                        <div id="nlCampModalContent"></div>
                     </div>
                 </div>
 
@@ -2008,6 +2029,7 @@
             btn.classList.add('active');
             location.hash = tab;
             if (tab === 'newsletter') nlLoadArticles();
+            if (tab === 'sub-campaigns') { nlLoadCampaignHistory(); nlLoadSendArticleList(); }
             if (tab === 'masternode-updates') { loadMnContacts(); loadMnCampaigns(); }
             if (tab === 'proposals') prLoadProposals();
             if (tab === 'analytics') anLoad();
@@ -2846,12 +2868,59 @@
                 msg.textContent = '✓ ' + data.message;
                 document.getElementById('nlCampSubject').value = '';
                 document.getElementById('nlCampBody').value    = '';
+                nlLoadCampaignHistory();
             } catch (err) {
                 msg.style.color = '#ef4444';
                 msg.textContent = '✕ ' + err.message;
             } finally {
                 btn.disabled = false;
             }
+        };
+
+        window.nlLoadCampaignHistory = async function() {
+            const key = await getNlKey();
+            if (!key) return;
+            const el = document.getElementById('nlCampHistory');
+            el.innerHTML = '<p style="color:var(--text-secondary);font-size:14px;">Loading…</p>';
+            try {
+                const res  = await fetch('/api/v1/newsletter/admin/subscriber-campaigns', { headers: { 'Authorization': `Bearer ${key}` } });
+                const data = await nlSafeJson(res);
+                if (!res.ok) throw new Error(data.error || res.statusText);
+                _nlCampaigns = data;
+                if (!data.length) { el.innerHTML = '<p style="color:var(--text-secondary);font-size:14px;">No campaigns sent yet.</p>'; return; }
+                el.innerHTML = '<table style="width:100%;border-collapse:collapse;font-size:13px;">'
+                    + '<thead><tr style="border-bottom:1px solid rgba(255,255,255,0.1);">'
+                    + '<th style="text-align:left;padding:8px 12px;color:#667eea;">Subject</th>'
+                    + '<th style="text-align:left;padding:8px 12px;color:#667eea;">Sent</th>'
+                    + '<th style="text-align:left;padding:8px 12px;color:#667eea;">Failed</th>'
+                    + '<th style="text-align:left;padding:8px 12px;color:#667eea;">Date</th>'
+                    + '<th style="padding:8px 12px;"></th>'
+                    + '</tr></thead><tbody>'
+                    + data.map(c => `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                        <td style="padding:10px 12px;color:#fff;">${c.subject}</td>
+                        <td style="padding:10px 12px;color:#34d399;">${c.sent_to}</td>
+                        <td style="padding:10px 12px;color:${c.failed > 0 ? '#ef4444' : 'var(--text-secondary)'};">${c.failed}</td>
+                        <td style="padding:10px 12px;color:var(--text-secondary);">${new Date(c.sent_at).toLocaleString()}</td>
+                        <td style="padding:10px 12px;text-align:right;">
+                            <button onclick="nlPreviewCampaign(${c.id})" style="padding:5px 12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:6px;color:var(--text-secondary);font-size:12px;cursor:pointer;">View</button>
+                        </td>
+                    </tr>`).join('')
+                    + '</tbody></table>';
+            } catch (err) {
+                el.innerHTML = `<p style="color:#ef4444;font-size:14px;">Error: ${err.message}</p>`;
+            }
+        };
+
+        let _nlCampaigns = [];
+        window.nlPreviewCampaign = function(id) {
+            const c = _nlCampaigns.find(x => x.id === id);
+            if (!c) return;
+            const modal = document.getElementById('nlCampModal');
+            document.getElementById('nlCampModalContent').innerHTML =
+                `<h3 style="margin:0 0 4px;color:#fff;">${c.subject}</h3>`
+                + `<p style="font-size:12px;color:var(--text-secondary);margin:0 0 20px;">${new Date(c.sent_at).toLocaleString()} · ${c.sent_to} sent · ${c.failed} failed</p>`
+                + `<div class="nl-preview-box">${nlRenderMd(c.body)}</div>`;
+            modal.style.display = 'flex';
         };
 
         window.nlCampUpdatePreview = function() {
@@ -2996,10 +3065,7 @@
             }
         };
 
-        // Populate article dropdown when newsletter tab opens
-        const _origNlLoad = window.nlLoadArticles;
-        window.nlLoadArticles = async function() {
-            await _origNlLoad();
+        window.nlLoadSendArticleList = async function() {
             const key = await getNlKey();
             if (!key) return;
             try {
@@ -3009,7 +3075,6 @@
                 sel.innerHTML = '<option value="" style="background:#1a1a2e;">— select an article —</option>'
                     + arts.filter(a => a.is_published).map(a => `<option value="${a.id}" style="background:#1a1a2e;">${a.title}</option>`).join('');
             } catch {}
-            nlLoadSubscribers();
         };
 
         window.nlResetForm = function() {

@@ -1083,8 +1083,8 @@
                     <div style="display:grid;gap:10px;">
                         <div>
                             <label style="font-size:13px;color:var(--text-secondary);display:block;margin-bottom:6px;">Article</label>
-                            <select id="nlSendArticle" style="width:100%;padding:9px 12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:7px;color:#fff;font-size:13px;">
-                                <option value="">— select an article —</option>
+                            <select id="nlSendArticle" style="width:100%;padding:9px 12px;background:#1a1a2e;border:1px solid rgba(255,255,255,0.12);border-radius:7px;color:#fff;font-size:13px;">
+                                <option value="" style="background:#1a1a2e;">— select an article —</option>
                             </select>
                         </div>
                         <div>
@@ -3006,8 +3006,8 @@
                 const res  = await fetch('/api/v1/newsletter/admin/articles', { headers: { 'Authorization': `Bearer ${key}` } });
                 const arts = await res.json();
                 const sel  = document.getElementById('nlSendArticle');
-                sel.innerHTML = '<option value="">— select an article —</option>'
-                    + arts.filter(a => a.is_published).map(a => `<option value="${a.id}">${a.title}</option>`).join('');
+                sel.innerHTML = '<option value="" style="background:#1a1a2e;">— select an article —</option>'
+                    + arts.filter(a => a.is_published).map(a => `<option value="${a.id}" style="background:#1a1a2e;">${a.title}</option>`).join('');
             } catch {}
             nlLoadSubscribers();
         };

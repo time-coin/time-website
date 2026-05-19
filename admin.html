@@ -2869,6 +2869,7 @@
                 document.getElementById('nlCampSubject').value = '';
                 document.getElementById('nlCampBody').value    = '';
                 nlLoadCampaignHistory();
+                setTimeout(nlLoadCampaignHistory, 5000);
             } catch (err) {
                 msg.style.color = '#ef4444';
                 msg.textContent = '✕ ' + err.message;
@@ -3053,13 +3054,14 @@
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
                     body: JSON.stringify({ subject, articleId }),
                 });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.error || 'Send failed');
+                const data = await nlSafeJson(res);
+                if (!res.ok) throw new Error(`${res.status}: ${data.error || res.statusText}`);
                 msg.style.color = '#34d399';
-                msg.textContent = `✓ Sent to ${data.sent} subscriber${data.sent !== 1 ? 's' : ''}${data.failed ? ` (${data.failed} failed)` : ''}`;
+                msg.textContent = '✓ ' + data.message;
+                setTimeout(nlLoadCampaignHistory, 1000);
             } catch (err) {
                 msg.style.color = '#ef4444';
-                msg.textContent = err.message;
+                msg.textContent = '✕ ' + err.message;
             } finally {
                 btn.disabled = false; btn.textContent = 'Send to All Subscribers';
             }
@@ -3921,11 +3923,12 @@
                     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
                     body: JSON.stringify({ subject, body }),
                 });
-                const data = await res.json();
-                if (!res.ok) { msg.textContent = data.error || 'Failed.'; msg.style.color = '#f87171'; return; }
+                const data = await nlSafeJson(res);
+                if (!res.ok) { msg.textContent = `${res.status}: ${data.error || res.statusText}`; msg.style.color = '#f87171'; return; }
                 msg.textContent = data.message;
                 msg.style.color = '#34d399';
-                setTimeout(() => { msg.textContent = ''; }, 6000);
+                loadMnCampaigns();
+                setTimeout(loadMnCampaigns, 5000);
             } catch {
                 msg.textContent = 'Request failed.'; msg.style.color = '#f87171';
             }
